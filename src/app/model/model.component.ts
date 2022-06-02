@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 interface Dataset {
-  value: string;
-  url: string;
+  title: String;
+  models: [];
+  info: [];
 }
 
 @Component({
@@ -12,19 +13,61 @@ interface Dataset {
   styleUrls: ['./model.component.scss']
 })
 export class ModelComponent implements OnInit {
-  urlSafe: SafeResourceUrl | undefined;
+  datasets: Dataset[];
+  url: string;
+  dataset: Array<Object> = [];
 
-  datasets: Dataset[] = [
-    {value: 'Test Scores of Students', url: "http://localhost:8000/testScoresOfStudents/notebook/analisys.html" }
-  ];
+  displayedColumns: string[] = [];
 
-  constructor(public sanitizer: DomSanitizer) { }
+  constructor(private http: HttpClient) {
+    this.url = "/api"
+
+    this.datasets = [{
+      title: 'test-scores-of-students',
+      models: [],
+      info: []
+    }];
+
+    http.get(this.url + '/test-scores-of-students/models', {responseType: 'text'}).subscribe(data => {
+      this.datasets[0]['models'] = JSON.parse(data)
+    })
+
+    http.get(this.url + '/test-scores-of-students/info', {responseType: 'text'}).subscribe(data => {
+      this.datasets[0]['info'] = JSON.parse(data)
+    })
+   }
 
   ngOnInit(): void {
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl('');
+    
   }
 
-  getModel(dataset: Dataset): void {
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(dataset.url);
+  getModel(chooseDataSet: Dataset): void {    
+    this.displayedColumns = Object.keys(chooseDataSet.models);
+
+    const valuesColumns = Object.values(chooseDataSet.models)
+    
+    this.displayedColumns.forEach((key, index) => {
+      const metrics = valuesColumns[index]
+
+      const metricsKey = Object.keys(metrics)
+      const metricsValue = Object.values(metrics)
+
+      metricsKey.forEach((_, index2) => {
+        let dataset = {'name': ''}
+
+        if (index2 == 0) dataset = {'name': key}
+
+        const nameMetric = metricsKey[index2]
+
+        const assignData = {nameMetric, 'value': metricsValue[index2]};
+
+        Object.assign(dataset, assignData);
+
+        this.dataset.push(dataset)
+      })
+    });
+
+    console.log(this.dataset);
+    this.displayedColumns = Object.keys(this.dataset[0]);
   }
 }

@@ -5,12 +5,35 @@
                 <mat-label>Select a dataset to viewer</mat-label>
                 <mat-select  (selectionChange)="getModel($event.value)">
                     <mat-option *ngFor="let dataset of datasets" [value]="dataset">
-                        {{dataset.value}}
+                        {{dataset.title}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
     </div>
-</div>
 
-<iframe width="100%" height="100%" frameBorder="0" [src]="urlSafe"></iframe>
+    <div class="row" *ngIf="dataset.length != 0">
+        <div  class="col">
+            <table mat-table [dataSource]="dataset" class="mat-elevation-z8">
+    
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> models </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nameMetric">
+                    <th mat-header-cell *matHeaderCellDef> metrics </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nameMetric}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="value">
+                    <th mat-header-cell *matHeaderCellDef> value </th>
+                    <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

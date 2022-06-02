@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "datasets-b1b3a": {
+      "hosting": {
+        "viewModel": [
+          "datasets-b1b3a"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "datasets-b1b3a"
+  }
+}
