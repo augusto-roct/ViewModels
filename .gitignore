@@ -48,3 +48,4 @@ env.ts
 .firebase
 *-debug.log
 .runtimeconfig.json
+.vercel

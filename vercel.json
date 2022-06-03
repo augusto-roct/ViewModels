@@ -1,0 +1,3 @@
+{
+    "routes": [{ "src": "/api/metrics/test-scores-of-students", "dest": "https://export-model-98nx5r8av-augusto-roct.vercel.app/metrics/test-scores-of-students" }]
+}
