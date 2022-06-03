@@ -32,6 +32,8 @@ export class ModelComponent implements OnInit {
     console.log(this.url + '/metrics/test-scores-of-students')
 
     http.get(this.url + '/metrics/test-scores-of-students', {responseType: 'text'}).subscribe(data => {
+      console.log(data)
+      console.log(JSON.parse(data))
       this.datasets[0]['models'] = JSON.parse(data)
     })
 
