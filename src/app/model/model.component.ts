@@ -29,9 +29,13 @@ export class ModelComponent implements OnInit {
       info: []
     }];
 
+    console.log(this.url + '/metrics/test-scores-of-students')
+
     http.get(this.url + '/metrics/test-scores-of-students', {responseType: 'text'}).subscribe(data => {
       this.datasets[0]['models'] = JSON.parse(data)
     })
+
+    console.log(this.datasets)
    }
 
   ngOnInit(): void {
@@ -39,6 +43,7 @@ export class ModelComponent implements OnInit {
   }
 
   getModel(chooseDataSet: Dataset): void {    
+    console.log(chooseDataSet)
     const nameList = Object.keys(chooseDataSet.models);
     Object.values(chooseDataSet.models).map((obj, index) => {
       // @ts-ignore
@@ -68,7 +73,7 @@ export class ModelComponent implements OnInit {
       return obj;
     });
 
-    
+    console.log(chooseDataSet)    
     
     this.dataset.data = Object.values(chooseDataSet.models);
     // @ts-ignore
