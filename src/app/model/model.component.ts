@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatTableDataSource } from '@angular/material/table';
 
 interface Dataset {
   title: String;
@@ -15,7 +16,7 @@ interface Dataset {
 export class ModelComponent implements OnInit {
   datasets: Dataset[];
   url: string;
-  dataset: Array<Object> = [];
+  dataset: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   displayedColumns: string[] = [];
 
@@ -28,12 +29,8 @@ export class ModelComponent implements OnInit {
       info: []
     }];
 
-    http.get(this.url + '/test-scores-of-students/models', {responseType: 'text'}).subscribe(data => {
+    http.get(this.url + '/metrics/test-scores-of-students', {responseType: 'text'}).subscribe(data => {
       this.datasets[0]['models'] = JSON.parse(data)
-    })
-
-    http.get(this.url + '/test-scores-of-students/info', {responseType: 'text'}).subscribe(data => {
-      this.datasets[0]['info'] = JSON.parse(data)
     })
    }
 
@@ -42,32 +39,39 @@ export class ModelComponent implements OnInit {
   }
 
   getModel(chooseDataSet: Dataset): void {    
-    this.displayedColumns = Object.keys(chooseDataSet.models);
+    const nameList = Object.keys(chooseDataSet.models);
+    Object.values(chooseDataSet.models).map((obj, index) => {
+      // @ts-ignore
+      obj['model'] = nameList[index];
 
-    const valuesColumns = Object.values(chooseDataSet.models)
-    
-    this.displayedColumns.forEach((key, index) => {
-      const metrics = valuesColumns[index]
+      // let keys = Object.keys(obj);
 
-      const metricsKey = Object.keys(metrics)
-      const metricsValue = Object.values(metrics)
+      // for (let index = keys.length-1; index > -1; index--) {
+      //   const key = keys[index];
+      //   delete Object.assign(obj, {[key+'2']: obj[key] })[key];
+      // }
 
-      metricsKey.forEach((_, index2) => {
-        let dataset = {'name': ''}
+      
+      
+      // // @ts-ignore
+      delete Object.assign(obj, {['score2']: obj['score'] })['score'];
+      delete Object.assign(obj, {['mae2']: obj['mae'] })['mae'];
+      delete Object.assign(obj, {['rmse2']: obj['rmse'] })['rmse'];
+      delete Object.assign(obj, {['rmsle2']: obj['rmsle'] })['rmsle'];
 
-        if (index2 == 0) dataset = {'name': key}
+      delete Object.assign(obj, {['score']: obj['score2'] })['score2'];
+      delete Object.assign(obj, {['mae']: obj['mae2'] })['mae2'];
+      delete Object.assign(obj, {['rmse']: obj['rmse2'] })['rmse2'];
+      delete Object.assign(obj, {['rmsle']: obj['rmsle2'] })['rmsle2'];
+      
 
-        const nameMetric = metricsKey[index2]
-
-        const assignData = {nameMetric, 'value': metricsValue[index2]};
-
-        Object.assign(dataset, assignData);
-
-        this.dataset.push(dataset)
-      })
+      return obj;
     });
 
-    console.log(this.dataset);
-    this.displayedColumns = Object.keys(this.dataset[0]);
+    
+    
+    this.dataset.data = Object.values(chooseDataSet.models);
+    // @ts-ignore
+    this.displayedColumns = Object.keys(chooseDataSet.models['svm']);
   }
 }
