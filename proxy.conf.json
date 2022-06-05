@@ -1,9 +1,9 @@
 {
     "/api": {
-    "target": "https://export-model-98nx5r8av-augusto-roct.vercel.app",
+    "target": "https://export-model.vercel.app",
     "secure": true,
     "pathRewrite": {
-        "^/api": "https://export-model-98nx5r8av-augusto-roct.vercel.app"
+        "^/api": "https://export-model.vercel.app"
       },
     "changeOrigin": true
     }
