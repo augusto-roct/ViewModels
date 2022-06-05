@@ -1,7 +1,10 @@
 table {
-    width: 50%;
+    width: 100%;
   }
   
+.tablePlot {
+  overflow-x: auto;
+}
 th.mat-sort-header-sorted {
   color: black;
 }

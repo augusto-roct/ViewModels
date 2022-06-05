@@ -1,58 +1,67 @@
 <div class="container">
-    <div class="row justify-content-center" flex>
-        <div class="col">
-            <mat-form-field appearance="fill">
-                <mat-label>Select a dataset to viewer</mat-label>
-                <mat-select  (selectionChange)="getModel($event.value)">
-                    <mat-option *ngFor="let dataset of datasets" [value]="dataset">
-                        {{dataset.title}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-2 col-xxl-1 ml-0 mt-3 mr-4 mr-xxl-5">
+            <div class="row">
+                <div class="col">
+                    <h1>Model's visualization</h1>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select a dataset to viewer</mat-label>
+                        <mat-select  (selectionChange)="getModel($event.value)">
+                            <mat-option *ngFor="let dataset of datasets" [value]="dataset">
+                                {{dataset.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-            <mat-form-field appearance="fill">
-                <mat-label>Select a analisy to viewer</mat-label>
-                <mat-select (selectionChange)="getAnalysis($event.value)" [disabled]="analysis.length == 0">
-                    <mat-option *ngFor="let analysi of analysis" [value]="analysi">
-                        {{analysi}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-    </div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select a analisy to viewer</mat-label>
+                        <mat-select (selectionChange)="getAnalysis($event.value)" [disabled]="analysis.length == 0">
+                            <mat-option *ngFor="let analysi of analysis" [value]="analysi">
+                                {{analysi}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>            
+        </div>  
 
-    <div class="row" *ngIf="metrics.data.length != 0">
-        <div  class="col-12">
-            <table mat-table [dataSource]="metrics" class="mat-elevation-z8">
-                
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Nome </th>
-                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                </ng-container>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-9 col-xxl-8 pl-0 mr-xs-0 ml-sm-0 m-xxl-0 p-xxl-0">
+            <app-perfil></app-perfil>
 
-                <ng-container matColumnDef="score">
-                    <th mat-header-cell *matHeaderCellDef> Score </th>
-                    <td mat-cell *matCellDef="let element"> {{element.score}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="rmsle">
-                    <th mat-header-cell *matHeaderCellDef> RMSLE </th>
-                    <td mat-cell *matCellDef="let element"> {{element.rmse}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="rmse">
-                    <th mat-header-cell *matHeaderCellDef> RMSE </th>
-                    <td mat-cell *matCellDef="let element"> {{element.rmse}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="mae">
-                    <th mat-header-cell *matHeaderCellDef> MAE </th>
-                    <td mat-cell *matCellDef="let element"> {{element.mae}} </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumnsMetrics"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsMetrics;"></tr>
-            </table>
+            <div class="row tablePlot" *ngIf="metrics.data.length != 0">
+                <div class="col ml-3 mt-3">
+                    <table mat-table [dataSource]="metrics" class="mat-elevation-z8">
+                        
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Nome </th>
+                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="score">
+                            <th mat-header-cell *matHeaderCellDef> Score </th>
+                            <td mat-cell *matCellDef="let element"> {{element.score}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="rmsle">
+                            <th mat-header-cell *matHeaderCellDef> RMSLE </th>
+                            <td mat-cell *matCellDef="let element"> {{element.rmse}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="rmse">
+                            <th mat-header-cell *matHeaderCellDef> RMSE </th>
+                            <td mat-cell *matCellDef="let element"> {{element.rmse}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="mae">
+                            <th mat-header-cell *matHeaderCellDef> MAE </th>
+                            <td mat-cell *matCellDef="let element"> {{element.mae}} </td>
+                        </ng-container>
+        
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsMetrics"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsMetrics;"></tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
