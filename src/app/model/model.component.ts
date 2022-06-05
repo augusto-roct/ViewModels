@@ -47,4 +47,8 @@ export class ModelComponent implements OnInit {
       });
     }
   }
+
+  search(): void {
+
+  }
 }

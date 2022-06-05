@@ -2,13 +2,23 @@ table {
     width: 100%;
   }
   
-.tablePlot {
+.table-plot {
   overflow-x: auto;
 }
+
 th.mat-sort-header-sorted {
   color: black;
 }
 
-// .test{
-//   width: 50%; margin: 0 auto;
-// }
+.mat-form-field {
+  padding: 0.3em 0.3em 0 0.3em;
+}
+
+.model {
+  height: 100%;
+  min-height: 100vh;
+}
+
+tr.element-row:hover {
+  background: whitesmoke;
+}
