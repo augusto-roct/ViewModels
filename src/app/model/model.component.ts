@@ -14,7 +14,7 @@ export class ModelComponent implements OnInit {
   analysis: Datasets["analysis"];
   title: String;
   url: String;
-  metrics: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   displayedColumnsMetrics: string[] = [];
 
   constructor(private http: HttpClient) {
@@ -23,8 +23,9 @@ export class ModelComponent implements OnInit {
     this.url = "/api";
 
     this.datasets = [
-      { title: 'test-scores-of-students',
-        analysis: ['info', 'metrics'] 
+      {
+        title: 'test-scores-of-students',
+        analysis: ['info', 'metrics']
       }
     ];
   }
@@ -38,11 +39,11 @@ export class ModelComponent implements OnInit {
   }
 
   getAnalysis(chooseAnalysi: string): void {
-    if(this.title != "") {
+    if (this.title != "") {
       this.http.get(this.url + '/' + chooseAnalysi + '/' + this.title, { responseType: 'text' }).subscribe(data => {
         const models: Array<Models> = JSON.parse(data);
-  
-        this.metrics.data = models;
+
+        this.dataSource.data = models;
         this.displayedColumnsMetrics = Object.keys(models[0]);
       });
     }
