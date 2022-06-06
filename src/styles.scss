@@ -5,3 +5,36 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@media (min-width: 992px) {
+    .border-lg-start {
+      border-left: 1px solid #dee2e6!important;
+    }
+    .border-lg-end {
+      border-right: 1px solid #dee2e6!important;
+    }
+    .border-lg-top {
+      border-top: 1px solid #dee2e6!important;
+    }
+    .border-lg-bottom {
+      border-bottom: 1px solid #dee2e6!important;
+    }
+  }
+
+  @media (min-width: 1px) {
+    .border-xs-start {
+      border-left: 1px solid #dee2e6!important;
+    }
+    .border-xs-end {
+      border-right: 1px solid #dee2e6!important;
+    }
+    .border-xs-top {
+      border-top: 1px solid #dee2e6!important;
+    }
+    .border-xs-bottom {
+      border-bottom: 1px solid #dee2e6!important;
+    }
+  }
+  
+  
+  
