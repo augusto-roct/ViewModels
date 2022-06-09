@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { Models } from '../_shared/interfaces/models';
 import { Datasets } from '../_shared/interfaces/datasets';
+import { Counts } from '../_shared/interfaces/Counts';
 
 @Component({
   selector: 'app-model',
@@ -14,8 +15,11 @@ export class ModelComponent implements OnInit {
   analysis: Datasets["analysis"];
   title: String;
   url: String;
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  displayedColumnsMetrics: string[] = [];
+  dataSourceModels: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  dataSourceCounts: Array<MatTableDataSource<any>> = [];
+  displayedColumns: string[] = [];
+  displayedColumnsCounts: Array<string[]> = [];
+  informationCounts: Array<string> = [];
 
   constructor(private http: HttpClient) {
     this.analysis = [];
@@ -25,7 +29,7 @@ export class ModelComponent implements OnInit {
     this.datasets = [
       {
         title: 'test-scores-of-students',
-        analysis: ['info', 'metrics']
+        analysis: ['models', 'counts']
       }
     ];
   }
@@ -34,22 +38,40 @@ export class ModelComponent implements OnInit {
   }
 
   getModel(chooseDataSet: Datasets): void {
-    this.title = chooseDataSet.title
-    this.analysis = chooseDataSet.analysis
+    this.title = chooseDataSet.title;
+    this.analysis = chooseDataSet.analysis;
   }
 
-  getAnalysis(chooseAnalysi: string): void {
-    if (this.title != "") {
-      this.http.get(this.url + '/' + chooseAnalysi + '/' + this.title, { responseType: 'text' }).subscribe(data => {
-        const models: Array<Models> = JSON.parse(data);
+  getAnalysis(chooseAnalysis: string): void {
+    if(this.title != "") {
+      console.log(this.url + '/' + this.title + '/' + chooseAnalysis);
+      this.http.get(this.url + '/' + this.title + '/' + chooseAnalysis, { responseType: 'text' }).subscribe(data => {
 
-        this.dataSource.data = models;
-        this.displayedColumnsMetrics = Object.keys(models[0]);
-      });
+        if(chooseAnalysis == 'models') {
+          const models: Array<Models> = JSON.parse(data);
+
+          this.dataSourceModels.data = models;
+          this.displayedColumns = Object.keys(models[0]);
+          this.dataSourceCounts = [];
+        } else if(chooseAnalysis == 'counts') {
+            const counts: Array<Counts> = JSON.parse(data);
+          
+            for (let index = 0; index < counts.length; index++) {
+              const element = counts[index];
+              this.dataSourceCounts.push(new MatTableDataSource<any>([]));
+              this.dataSourceCounts[index].data = element.value;
+
+              const column = element.column? element.column : '';
+
+              this.informationCounts.push(column);
+              delete element.column;
+
+              this.displayedColumnsCounts.push(Object.keys(element.value[0]));
+            }
+
+            this.dataSourceModels = new MatTableDataSource<any>([]);
+          }
+        });
     }
-  }
-
-  search(): void {
-
   }
 }

@@ -1,4 +1,4 @@
-<div class="container model-view">
+d<div class="container model-view">
   <div class="row h-100">
     <div class="col-12 col-lg-4 border-lg-start border-xs-bottom">
       <div class="row">
@@ -23,8 +23,8 @@
           <mat-form-field class="w-100" appearance="fill">
             <mat-label>Select a analisy to viewer</mat-label>
             <mat-select (selectionChange)="getAnalysis($event.value)" [disabled]="analysis.length == 0">
-              <mat-option *ngFor="let analysi of analysis" [value]="analysi">
-                {{analysi}}
+              <mat-option *ngFor="let choose of analysis" [value]="choose">
+                {{choose}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -35,13 +35,14 @@
     <div class="col-12 col-lg-8 border-lg-start border-lg-end h-100">
       <app-perfil></app-perfil>
 
-      <div class="container" *ngIf="dataSource.data.length != 0">
+      <div class="container" *ngIf="dataSourceModels.data.length != 0">
         <div class="row table-plot">
           <div class="col-12 pb-1">
-            <table mat-table [dataSource]="dataSource" class="shadow-sm table-hover">
+            <h1>Models</h1>
+            <table mat-table [dataSource]="dataSourceModels" class="shadow-sm table-hover">
 
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Nome </th>
+                <th mat-header-cell *matHeaderCellDef> Name </th>
                 <td mat-cell *matCellDef="let element"> {{element.name}} </td>
               </ng-container>
 
@@ -65,8 +66,31 @@
                 <td mat-cell *matCellDef="let element"> {{element.mae}} </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumnsMetrics"></tr>
-              <tr mat-row class="element-row" *matRowDef="let row; columns: displayedColumnsMetrics;"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row class="element-row" *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" *ngIf="dataSourceCounts.length != 0">
+        <div class="row table-plot" *ngFor="let dataCounts of dataSourceCounts; index as dataIndex">
+          <div class="col-12 pb-1">
+            <h1>{{informationCounts[dataIndex]}}</h1>
+            <table mat-table [dataSource]="dataCounts" class="shadow-sm table-hover">
+
+              <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef> Name </th>
+                  <td mat-cell *matCellDef="let element;">{{element.name}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef> Value </th>
+                <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsCounts[dataIndex]"></tr>
+              <tr mat-row class="element-row" *matRowDef="let row; columns: displayedColumnsCounts[dataIndex];"></tr>
             </table>
           </div>
         </div>
